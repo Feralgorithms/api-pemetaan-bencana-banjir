@@ -4,6 +4,7 @@ import laporanRoutes from './routes/laporanRoutes.js';
 import kecamatanRoutes from './routes/kecamatanRoutes.js';
 import sungaiRoutes from './routes/sungaiRoutes.js';
 import desaRoutes from './routes/desaRoutes.js';
+import 'scheduler.js'
 
 const app = express();
 
