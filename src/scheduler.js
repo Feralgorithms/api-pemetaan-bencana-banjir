@@ -5,7 +5,7 @@ async function updateKadaluarsa() {
     const { error } = await supabase
       .from('laporan_banjir')
       .update({ status: 'kadaluarsa' })
-      .lt('created_at', new Date(Date.now() - 5 * 60 * 60 * 1000))
+      .lt('created_at', new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString())
       .eq('status', 'aktif');
 
     if (error) throw error;
