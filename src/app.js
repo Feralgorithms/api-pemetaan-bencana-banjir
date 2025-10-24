@@ -5,7 +5,6 @@ import kecamatanRoutes from './routes/kecamatanRoutes.js';
 import sungaiRoutes from './routes/sungaiRoutes.js';
 import desaRoutes from './routes/desaRoutes.js';
 
-
 const app = express();
 
 app.use(cors());
