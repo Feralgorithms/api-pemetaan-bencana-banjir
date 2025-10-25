@@ -9,8 +9,8 @@ import {
 const router = express.Router();
 
 router.get("/", getRisikoBanjir);
-router.get("/:nama_desa", getRisikoByDesa);
-router.patch("/:nama_desa", updateRisikoByDesa);
+router.get("/:id", getRisikoByDesa);
+router.patch("/:id", updateRisikoByDesa);
 router.delete('/:id', deleteRisiko);
 
 export default router;
