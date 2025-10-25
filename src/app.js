@@ -4,6 +4,7 @@ import laporanRoutes from './routes/laporanRoutes.js';
 import kecamatanRoutes from './routes/kecamatanRoutes.js';
 import sungaiRoutes from './routes/sungaiRoutes.js';
 import desaRoutes from './routes/desaRoutes.js';
+import risikoRoutes from './routes/risikoRoutes.js'
 import './scheduler.js'
 
 const app = express();
@@ -15,6 +16,7 @@ app.use('/kecamatan', kecamatanRoutes);
 app.use('/desa', desaRoutes);
 app.use('/sungai', sungaiRoutes);
 app.use('/laporan', laporanRoutes);
+app.use('/risiko', risikoRoutes);
 
 app.get('/', (req, res) => {
   res.send('API Pemetaan Banjir aktif ');

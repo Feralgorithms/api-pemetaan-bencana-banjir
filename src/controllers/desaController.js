@@ -109,3 +109,70 @@ export const getDesaByKode = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+
+// ADMIN
+export const tambahDesa = async (req, res) => {
+  try {
+    const { kode_desa, nama_desa, id_kecamatan, luas, jumlah_penduduk, geom } = req.body;
+
+    if (!geom) {
+      return res.status(400).json({ success: false, message: "Geom wajib diisi (GeoJSON)" });
+    }
+
+    const { data, error } = await supabase
+      .from("desa")
+      .insert([
+        {
+          kode_desa,
+          nama_desa,
+          id_kecamatan,
+          luas,
+          jumlah_penduduk,
+          geom
+        }
+      ])
+      .select();
+
+    if (error) throw error;
+
+    res.json({ success: true, message: "Desa berhasil ditambahkan", data });
+
+  } catch (err) {
+    console.error("Error tambahDesa:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export const updateDesa = async (req, res) => {
+  try {
+    const { kode_desa } = req.params;
+    const { nama_desa, id_kecamatan, luas, jumlah_penduduk, geom } = req.body;
+
+    const updateFields = {
+      ...(nama_desa !== undefined && { nama_desa }),
+      ...(id_kecamatan !== undefined && { id_kecamatan }),
+      ...(luas !== undefined && { luas }),
+      ...(jumlah_penduduk !== undefined && { jumlah_penduduk }),
+      ...(geom !== undefined && { geom }),
+    };
+
+    const { data, error } = await supabase
+      .from("desa")
+      .update(updateFields)
+      .eq("kode_desa", kode_desa)
+      .select();
+
+    if (error) throw error;
+    if (!data || data.length === 0) {
+      return res.status(404).json({ success: false, message: "Desa tidak ditemukan" });
+    }
+
+    res.json({ success: true, message: "Desa berhasil diperbarui", data });
+
+  } catch (err) {
+    console.error("Error updateDesa:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
