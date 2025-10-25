@@ -55,10 +55,6 @@ export const getKecamatanById = async (req, res) => {
   }
 };
 
-import { supabase } from '../config/supabaseClient.js';
-import 'dotenv/config';
-
-
 // ADMIN
 export const tambahKecamatan = async (req, res) => {
   try {
