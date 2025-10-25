@@ -3,7 +3,7 @@ import {
   getRisikoBanjir,
   getRisikoByDesa,
   updateRisikoByDesa
-} from "../controllers/risikoBanjirController.js";
+} from "../controllers/risikoController.js";
 
 const router = express.Router();
 
