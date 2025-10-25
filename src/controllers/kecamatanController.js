@@ -54,3 +54,68 @@ export const getKecamatanById = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+import { supabase } from '../config/supabaseClient.js';
+import 'dotenv/config';
+
+
+// ADMIN
+export const tambahKecamatan = async (req, res) => {
+  try {
+    const { kode_kec, nama_kecamatan, luas, geom } = req.body;
+
+    const { data, error } = await supabase
+      .from('kecamatan')
+      .insert([
+        {
+          kode_kec,
+          nama_kecamatan,
+          luas,
+          geom
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.json({ success: true, message: "Kecamatan berhasil ditambahkan", data });
+
+  } catch (err) {
+    console.error("Error tambahKecamatan:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+
+export const updateKecamatan = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { kode_kec, nama_kecamatan, luas, geom } = req.body;
+
+    const { data, error } = await supabase
+      .from('kecamatan')
+      .update({
+        ...(kode_kec !== undefined && { kode_kec }),
+        ...(nama_kecamatan !== undefined && { nama_kecamatan }),
+        ...(luas !== undefined && { luas }),
+        ...(geom !== undefined && { geom }),
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    if (!data) return res.status(404).json({ success: false, message: "Kecamatan tidak ditemukan" });
+
+    res.json({
+      success: true,
+      message: "Data kecamatan berhasil diperbarui",
+      data
+    });
+
+  } catch (err) {
+    console.error("Error updateKecamatan:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
