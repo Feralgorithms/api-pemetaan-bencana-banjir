@@ -22,12 +22,12 @@ export const getRisikoBanjir = async (req, res) => {
 
 export const getRisikoByDesa = async (req, res) => {
   try {
-    const { nama_desa } = req.params;
+    const { id } = req.params;
 
     const { data, error } = await supabase
       .from('risiko_banjir')
       .select('*')
-      .eq('nama_desa', nama_desa)
+      .eq('id', id)
       .single();
 
     if (error) throw error;
