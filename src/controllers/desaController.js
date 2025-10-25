@@ -5,7 +5,7 @@ export const getSemuaDesa = async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('desa')
-      .select('kode_desa, nama_desa, id_kecamatan, luas')
+      .select('kode_desa, nama_desa, id_kecamatan, luas, jumlah_penduduk')
       .order('nama_desa', { ascending: true });
 
     if (error) throw error;
