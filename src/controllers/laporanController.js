@@ -109,3 +109,17 @@ export const updateLaporan = async (req, res) => {
   }
 };
 
+export const deleteLaporan = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabase
+      .from('laporan_banjir')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+    res.json({ success: true, message: 'Laporan berhasil dihapus' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

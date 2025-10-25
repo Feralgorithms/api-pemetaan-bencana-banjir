@@ -176,3 +176,17 @@ export const updateDesa = async (req, res) => {
   }
 };
 
+export const deleteDesa = async (req, res) => {
+  try {
+    const { kode_desa } = req.params;
+    const { data, error } = await supabase
+      .from('desa')
+      .delete()
+      .eq('kode_desa', kode_desa);
+
+    if (error) throw error;
+    res.json({ success: true, message: 'Desa berhasil dihapus' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
