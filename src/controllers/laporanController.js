@@ -48,12 +48,14 @@ export const tambahLaporan = async (req, res) => {
   }
 };
 
+
 export const getLaporan = async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('laporan_banjir')
       .select('*')
-      .eq('status', 'aktif') // hanya ambil laporan yang masih aktif
+      .eq('status', 'aktif')
+      .eq('verifikasi', 'diterima')
       .order('id', { ascending: false });
 
     if (error) throw error;
@@ -63,3 +65,4 @@ export const getLaporan = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
