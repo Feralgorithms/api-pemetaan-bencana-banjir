@@ -47,7 +47,7 @@ export const getRisikoByDesa = async (req, res) => {
 
 export const updateRisikoByDesa = async (req, res) => {
   try {
-    const { nama_desa } = req.params;
+    const { id } = req.params;
     const { rata_tinggi_air, kategori, jumlah_laporan } = req.body;
 
     const { data, error } = await supabase
@@ -58,7 +58,7 @@ export const updateRisikoByDesa = async (req, res) => {
         ...(jumlah_laporan !== undefined && { jumlah_laporan }),
         terakhir_diperbarui: new Date()
       })
-      .eq('nama_desa', nama_desa)
+      .eq('id', id)
       .select()
       .single();
 
