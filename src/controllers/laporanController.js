@@ -66,3 +66,46 @@ export const getLaporan = async (req, res) => {
   }
 };
 
+
+// ADMIN
+export const getAllLaporan = async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('laporan_banjir')
+      .select('*')
+      .order('id', { ascending: false });
+
+    if (error) throw error;
+
+    res.json({ success: true, data });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+
+export const updateLaporan = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { tinggi_air, deskripsi, status, verifikasi } = req.body;
+
+    const { data, error } = await supabase
+      .from('laporan_banjir')
+      .update({
+        ...(tinggi_air !== undefined && { tinggi_air }),
+        ...(deskripsi !== undefined && { deskripsi }),
+        ...(status !== undefined && { status }),
+        ...(verifikasi !== undefined && { verifikasi })
+      })
+      .eq('id', id)
+      .select();
+
+    if (error) throw error;
+
+    res.json({ success: true, message: "Laporan berhasil diperbarui", data });
+
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
