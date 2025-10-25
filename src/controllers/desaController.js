@@ -79,7 +79,7 @@ export const getDesaByKode = async (req, res) => {
 
     const { data, error } = await supabase
       .from('desa')
-      .select('kode_desa, nama_desa, id_kecamatan, luas, geom')
+      .select('kode_desa, nama_desa, id_kecamatan, luas, geom,jumlah_penduduk')
       .eq('kode_desa', kode_desa)
       .single();
 
@@ -96,6 +96,7 @@ export const getDesaByKode = async (req, res) => {
             kode_desa: data.kode_desa,
             nama_desa: data.nama_desa,
             luas: data.luas,
+            jumlah_penduduk: data.jumlah_penduduk,
             id_kecamatan: data.id_kecamatan,
           },
           geometry: data.geom,
