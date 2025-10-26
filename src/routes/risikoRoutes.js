@@ -5,12 +5,13 @@ import {
   updateRisikoByDesa,
   deleteRisiko
 } from "../controllers/risikoController.js";
+import {authMiddleware} from '../middleware/auth.js';
 
 const router = express.Router();
 
 router.get("/", getRisikoBanjir);
 router.get("/:id", getRisikoByDesa);
-router.patch("/:id", updateRisikoByDesa);
-router.delete('/:id', deleteRisiko);
+router.patch("/:id", authMiddleware,updateRisikoByDesa);
+router.delete('/:id', authMiddleware,deleteRisiko);
 
 export default router;
