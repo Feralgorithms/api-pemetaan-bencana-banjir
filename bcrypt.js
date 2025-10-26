@@ -7,4 +7,4 @@ async function hashPw(plaintext) {
     console.log(hashed)
 }
 
-hashPw('ferrr123')
+hashPw('admin23')
