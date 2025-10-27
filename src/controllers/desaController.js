@@ -33,23 +33,29 @@ export const getDesaByKecamatan = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Desa tidak ditemukan' });
     }
 
-    // Ambil data risiko dari tabel risiko_banjir
+    // Ambil risiko desa yang diketahui saja
+    const desaNames = desaData.map(d => d.nama_desa);
+
     const { data: risikoData, error: risikoError } = await supabase
       .from('risiko_banjir')
-      .select('nama_desa, kategori');
+      .select('nama_desa, kategori, rata_tinggi_air, jumlah_laporan')
+      .in('nama_desa', desaNames);
 
     if (risikoError) throw risikoError;
 
-    // Gabungkan data risiko ke dalam desa
-    const gabungData = desaData.map(desa => {
-      const risiko = risikoData.find(r => r.nama_desa === desa.nama_desa);
+    // Gabungkan ke data desa
+    const gabungData = desaData.map((desa) => {
+      const risiko = risikoData?.find(r => r.nama_desa === desa.nama_desa);
+
       return {
         ...desa,
-        kategori_risiko: risiko ? risiko.kategori : 'Belum Ada Data'
+        kategori_risiko: risiko ? risiko.kategori : 'Belum ada data',
+        rata_tinggi_air: risiko ? risiko.rata_tinggi_air : 'Belum ada data',
+        jumlah_laporan: risiko ? risiko.jumlah_laporan : 0,
       };
     });
 
-    // Format jadi GeoJSON
+    // Format ke GeoJSON
     const geojson = {
       type: 'FeatureCollection',
       features: gabungData.map((desa) => ({
@@ -59,18 +65,22 @@ export const getDesaByKecamatan = async (req, res) => {
           nama_desa: desa.nama_desa,
           luas: desa.luas,
           id_kecamatan: desa.id_kecamatan,
-          kategori_risiko: desa.kategori_risiko
+          kategori_risiko: desa.kategori_risiko,
+          rata_tinggi_air: desa.rata_tinggi_air,
+          jumlah_laporan: desa.jumlah_laporan,
         },
         geometry: desa.geom,
       })),
     };
 
     res.json({ success: true, data: geojson });
+
   } catch (err) {
     console.error('Error getDesaByKecamatan:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
 
 
 export const getDesaByKode = async (req, res) => {
