@@ -25,7 +25,7 @@ export const getDesaByKecamatan = async (req, res) => {
     // Ambil semua desa dalam kecamatan
     const { data: desaData, error: desaError } = await supabase
       .from('desa')
-      .select('kode_desa, nama_desa, id_kecamatan, luas, geom')
+      .select('nama_desa, luas, jumlah_penduduk geom')
       .eq('id_kecamatan', id_kecamatan);
 
     if (desaError) throw desaError;
@@ -61,10 +61,9 @@ export const getDesaByKecamatan = async (req, res) => {
       features: gabungData.map((desa) => ({
         type: 'Feature',
         properties: {
-          kode_desa: desa.kode_desa,
           nama_desa: desa.nama_desa,
           luas: desa.luas,
-          id_kecamatan: desa.id_kecamatan,
+          jumlah_penduduk: desa.jumlah_penduduk,
           kategori_risiko: desa.kategori_risiko,
           rata_tinggi_air: desa.rata_tinggi_air,
           jumlah_laporan: desa.jumlah_laporan,
