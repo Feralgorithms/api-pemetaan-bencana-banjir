@@ -1,5 +1,7 @@
 # Node
 node_modules
+migrations-remote-schema.sql
+
 
 # Environment
 .env
